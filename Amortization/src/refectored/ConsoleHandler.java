@@ -6,12 +6,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.IllegalFormatException;
 
-public class MessageHandler {
-	private static MessageHandler instance = new MessageHandler();
+/**
+ * Message handle class for input and output to console.
+ * We would define a interface 
+ * @author kewewang
+ *
+ */
+public class ConsoleHandler implements IOHandler{
+	private static ConsoleHandler instance = new ConsoleHandler();
 	private static Console console = null;
 	private boolean isConsole = false;
 	
-	private MessageHandler() {
+	private ConsoleHandler() {
 		console = System.console();
 		if (console != null) {
 			isConsole = true;
@@ -22,7 +28,7 @@ public class MessageHandler {
 	 * 
 	 * @return
 	 */
-	public static MessageHandler getInstance() {
+	public static ConsoleHandler getInstance() {
 		return instance;
 	}
 	

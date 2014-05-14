@@ -2,19 +2,26 @@ package refectored;
 
 import java.io.IOException;
 
+/**
+ * Main Class to start the application
+ * @author kewewang
+ *
+ */
 public class Application {
 	private static final UserPrompt[] USER_PROMPTS = {
 		UserPrompt.AMOUNT, UserPrompt.APR, UserPrompt.TERM_YEARS
 	};
 	
-	private static final MessageHandler MESSAGEHANDLER = MessageHandler.getInstance();
-	
+	private static final IOHandler MESSAGEHANDLER = ConsoleHandler.getInstance();
+	// amount input by user
 	private double amount;
+	// apr input by user
 	private double apr;
+	// years input by user
 	private int years;
 	
 	/**
-	 * 
+	 * handle input from user
 	 */
 	private void InputHandler() {
 		
@@ -75,7 +82,7 @@ public class Application {
 	}
 	
 	/**
-	 * 
+	 * Method of excute the application. 
 	 */
 	public void execute() {
 		InputHandler();

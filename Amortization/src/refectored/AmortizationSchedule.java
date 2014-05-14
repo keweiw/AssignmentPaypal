@@ -15,7 +15,7 @@ public class AmortizationSchedule {
 			"PaymentAmount", "PaymentInterest", "CurrentBalance",
 			"TotalPayments", "TotalInterestPaid" };
 
-	private static final MessageHandler MESSAGEHANDLER = MessageHandler
+	private static final ConsoleHandler MESSAGEHANDLER = ConsoleHandler
 			.getInstance();
 	private ArrayList<MonthlyPaymentPlan> plan;
 
@@ -83,6 +83,9 @@ public class AmortizationSchedule {
 		return Math.round(rc);
 	}
 	
+	/**
+	 * Method for generated PaymentPlan
+	 */
 	public void generatedPaymentPlan() {
 		long balance = amountBorrowed;
 		int paymentNumber = 0;
@@ -163,8 +166,6 @@ public class AmortizationSchedule {
 		MESSAGEHANDLER.printf(STRING_FORMAT_TITLE, REUSLT_TAB_NAME[0],
 				REUSLT_TAB_NAME[1], REUSLT_TAB_NAME[2], REUSLT_TAB_NAME[3],
 				REUSLT_TAB_NAME[4], REUSLT_TAB_NAME[5]);
-
-		
 
 		// output is in dollars
 		for(MonthlyPaymentPlan mp : plan) {

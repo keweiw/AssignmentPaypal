@@ -1,5 +1,11 @@
 package refectored;
 
+/**
+ * Monthly Payment Plan Persistent Object.
+ * define member as public for convenience only, should be private with get set.
+ * @author kewewang
+ *
+ */
 public class MonthlyPaymentPlan {
 	public int paymentNo;
 	public long curMonthlyPaymentAmount;
