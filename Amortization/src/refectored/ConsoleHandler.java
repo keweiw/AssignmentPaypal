@@ -70,7 +70,7 @@ public class ConsoleHandler implements IOHandler{
 			line = console.readLine(userPrompt);
 		} else {
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-			print(userPrompt);
+			print(userPrompt + "\n");
 			line = bufferedReader.readLine();
 		}
 		line.trim();
