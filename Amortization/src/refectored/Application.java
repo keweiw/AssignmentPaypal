@@ -87,7 +87,7 @@ public class Application {
 	public void execute() {
 		InputHandler();
 		try {
-			AmortizationSchedule as = new AmortizationSchedule(amount, apr, years);
+			AmortizationSchedule as = new AmortizationSchedule(amount, apr, years, MESSAGEHANDLER);
 			as.generatedPaymentPlan();
 			as.outputAmortizationSchedule();
 		} catch (IllegalArgumentException e) {

@@ -7,7 +7,9 @@ public class AmortizationSchedule {
 			1000000000000d };
 	public static final double[] APR_RANGE = new double[] { 0.000001d, 100d };
 	public static final int[] TERM_RANGE = new int[] { 1, 1000000 };
+	
 	private static final double monthlyInterestDivisor = 12d * 100d;
+	
 	private static final String STRING_FORMAT_TITLE = "%1$-20s%2$-20s%3$-20s%4$-20s%5$-20s%6$-20s\n";
 	private static final String STRING_FORMAT_VALUE = "%1$-20d%2$-20.2f%3$-20.2f%4$-20.2f%5$-20.2f%6$-20.2f\n";
 
@@ -15,8 +17,8 @@ public class AmortizationSchedule {
 			"PaymentAmount", "PaymentInterest", "CurrentBalance",
 			"TotalPayments", "TotalInterestPaid" };
 
-	private static final ConsoleHandler MESSAGEHANDLER = ConsoleHandler
-			.getInstance();
+	private IOHandler messageHandler;
+	
 	private ArrayList<MonthlyPaymentPlan> plan;
 
 	private long amountBorrowed = 0; // in cents
@@ -26,13 +28,14 @@ public class AmortizationSchedule {
 	private double monthlyInterest = 0d;
 	private long monthlyPaymentAmount = 0; // in cents
 
-	public AmortizationSchedule(double amount, double interestRate, int years)
+	public AmortizationSchedule(double amount, double interestRate, int years, IOHandler ioh)
 			throws IllegalArgumentException {
 		if ((isValidBorrowAmount(amount) == false)
 				|| (isValidAPRValue(interestRate) == false)
 				|| (isValidTerm(years) == false)) {
 			throw new IllegalArgumentException("");
 		}
+		messageHandler = ioh;
 		amountBorrowed = Math.round(amount * 100);
 		apr = interestRate;
 		initialTermMonths = years * 12;
@@ -70,16 +73,12 @@ public class AmortizationSchedule {
 		 * monthlyInterest = apr / monthlyInterestDivisor; this is 1 / (1 + J)
 		 */
 		double tmp = Math.pow(1d + monthlyInterest, -1);
-
 		// this is Math.pow(1/(1 + J), N)
 		tmp = Math.pow(tmp, initialTermMonths);
-
 		// this is 1 / (1 - (Math.pow(1/(1 + J), N))))
 		tmp = Math.pow(1d - tmp, -1);
-
 		// M = P * (J / (1 - (Math.pow(1/(1 + J), N))));
 		double rc = amountBorrowed * monthlyInterest * tmp;
-
 		return Math.round(rc);
 	}
 	
@@ -97,7 +96,6 @@ public class AmortizationSchedule {
 		
 		final int maxNumberOfPayments = initialTermMonths + 1;
 		while ((balance > 0) && (paymentNumber <= maxNumberOfPayments)) {
-
 			// Calculate H = P x J, this is your current monthly interest
 			long curMonthlyInterest = Math.round(((double) balance)
 					* monthlyInterest);
@@ -110,10 +108,8 @@ public class AmortizationSchedule {
 					curPayoffAmount);
 
 			// it's possible that the calculated monthlyPaymentAmount is 0,
-
 			// or the monthly payment only covers the interest payment - i.e. no
 			// principal
-
 			// so the last payment needs to payoff the loan
 			if ((paymentNumber == maxNumberOfPayments)
 					&& ((curMonthlyPaymentAmount == 0) || (curMonthlyPaymentAmount == curMonthlyInterest))) {
@@ -122,7 +118,6 @@ public class AmortizationSchedule {
 
 			// Calculate C = M - H, this is your monthly payment minus your
 			// monthly interest,
-
 			// so it is the amount of principal you pay for that month
 
 			long curMonthlyPrincipalPaid = curMonthlyPaymentAmount
@@ -135,7 +130,6 @@ public class AmortizationSchedule {
 			totalInterestPaid += curMonthlyInterest;
 
 			// output is in dollars
-			
 			mp = new MonthlyPaymentPlan(paymentNumber++, curMonthlyPaymentAmount, curMonthlyInterest, curBalance, totalPayments, totalInterestPaid);
 			plan.add(mp);
 
@@ -163,13 +157,13 @@ public class AmortizationSchedule {
 		 * your loan. 4. Set P equal to Q and go back to Step 1: You thusly loop
 		 * around until the value Q (and hence P) goes to zero.
 		 */
-		MESSAGEHANDLER.printf(STRING_FORMAT_TITLE, REUSLT_TAB_NAME[0],
+		messageHandler.printf(STRING_FORMAT_TITLE, REUSLT_TAB_NAME[0],
 				REUSLT_TAB_NAME[1], REUSLT_TAB_NAME[2], REUSLT_TAB_NAME[3],
 				REUSLT_TAB_NAME[4], REUSLT_TAB_NAME[5]);
 
 		// output is in dollars
 		for(MonthlyPaymentPlan mp : plan) {
-			MESSAGEHANDLER.printf(STRING_FORMAT_VALUE, mp.paymentNo,
+			messageHandler.printf(STRING_FORMAT_VALUE, mp.paymentNo,
 					((double) mp.curMonthlyPaymentAmount) / 100d,
 					((double) mp.curMonthlyInterest) / 100d,
 					((double) mp.curBalance) / 100d,
