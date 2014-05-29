@@ -1,0 +1,22 @@
+<html>
+<head>
+<title>{{title}}</title>
+</head>
+  
+<body>
+<h1>{{title}}</h1>
+<table style="width:600px">
+<tr>
+<td>City</td>
+<td>Weather</td>
+<td></td>
+<td>status</td>
+</tr> 
+{{#each cities}}
+   <tr>
+      <td>{{name}}</td><td>{{weather}}</td><td><img src="{{link}}"></td><td>{{#if updated}}Updated{{else}}Unable to fecth{{/if}}</td>
+   </tr>
+{{/each}}
+</table>  
+</body>
+</html>
