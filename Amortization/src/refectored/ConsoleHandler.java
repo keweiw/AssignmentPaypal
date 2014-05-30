@@ -20,7 +20,7 @@ public class ConsoleHandler implements IOHandler{
 	private ConsoleHandler() {
 		console = System.console();
 		if (console != null) {
-			isConsole = true;
+//			isConsole = true;
 		}
 	}
 	
