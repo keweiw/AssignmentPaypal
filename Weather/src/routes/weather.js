@@ -37,6 +37,7 @@ exports.list = function(req, res){
                     session: req.session,
                     cities: citiesData
                 });
+          }
 	});
     }
 
