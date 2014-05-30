@@ -14,13 +14,13 @@ import java.util.IllegalFormatException;
  */
 public class ConsoleHandler implements IOHandler{
 	private static ConsoleHandler instance = new ConsoleHandler();
-	private static Console console = null;
+	private Console console = null;
 	private boolean isConsole = false;
 	
 	private ConsoleHandler() {
 		console = System.console();
 		if (console != null) {
-//			isConsole = true;
+			isConsole = true;
 		}
 	}
 	
